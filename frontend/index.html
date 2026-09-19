@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cybersecurity Research &amp; Funding Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+    <div class="brand">
+      <div class="brand-mark">CS</div>
+      <div class="brand-text">
+        <span class="brand-title">Cybersecurity Research</span>
+        <span class="brand-sub">&amp; Funding Tracker</span>
+      </div>
+    </div>
+    <nav class="topnav" id="topnav">
+      <a href="#/dashboard" data-route="dashboard">Dashboard</a>
+      <a href="#/opportunities" data-route="opportunities">Opportunities</a>
+      <a href="#/sources" data-route="sources">Sources</a>
+      <a href="#/saved" data-route="saved">Saved</a>
+      <a href="#/research" data-route="research">Research Projects</a>
+      <a href="#/phd" data-route="phd">PhD</a>
+      <a href="#/tasks" data-route="tasks">Tasks</a>
+      <a href="#/settings" data-route="settings">Settings</a>
+    </nav>
+    <div class="topbar-right">
+      <span class="status-dot" id="api-status" title="API status"></span>
+    </div>
+  </div>
+</header>
+
+<main id="app" class="app-shell">
+
+  <!-- DASHBOARD -->
+  <section class="view" id="view-dashboard">
+    <div class="hero">
+      <h1>Cybersecurity Funding Intelligence</h1>
+      <p>Discover cybersecurity research, grants and international collaboration opportunities.</p>
+      <form class="searchbar" id="dash-search-form">
+        <input id="dash-search-input" type="text" placeholder="Search cybersecurity opportunities…" autocomplete="off" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="stats" id="stats-grid">
+      <div class="stat"><div class="stat-label">Sources monitored</div><div class="stat-value" id="stat-sources">—</div></div>
+      <div class="stat"><div class="stat-label">Cybersecurity opportunities</div><div class="stat-value" id="stat-opps">—</div></div>
+      <div class="stat"><div class="stat-label">Open opportunities</div><div class="stat-value" id="stat-open">—</div></div>
+      <div class="stat"><div class="stat-label">Upcoming deadlines</div><div class="stat-value" id="stat-deadlines">—</div></div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Live Opportunities</h2>
+          <button class="ghost-btn" id="refresh-btn">Refresh</button>
+        </div>
+        <div id="live-opps" class="card-grid">
+          <div class="skeleton card"></div>
+          <div class="skeleton card"></div>
+          <div class="skeleton card"></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-head"><h2>Source Status</h2></div>
+        <div id="source-status-list" class="source-status">
+          <div class="skeleton row"></div>
+          <div class="skeleton row"></div>
+          <div class="skeleton row"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- OPPORTUNITIES -->
+  <section class="view hidden" id="view-opportunities">
+    <div class="view-head">
+      <h1>Opportunities</h1>
+      <form class="searchbar" id="opp-search-form">
+        <input id="opp-search-input" type="text" placeholder="Search cybersecurity opportunities…" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="layout-with-sidebar">
+      <aside class="sidebar" id="filter-sidebar">
+        <div class="sidebar-head">
+          <h3>Filters</h3>
+          <button class="ghost-btn" id="clear-filters">Clear</button>
+        </div>
+
+        <div class="filter-group">
+          <h4>Research Area</h4>
+          <label><input type="checkbox" data-filter="area" value="Zero Trust"> Zero Trust</label>
+          <label><input type="checkbox" data-filter="area" value="IAM"> IAM</label>
+          <label><input type="checkbox" data-filter="area" value="Cloud Security"> Cloud Security</label>
+          <label><input type="checkbox" data-filter="area" value="Network Security"> Network Security</label>
+          <label><input type="checkbox" data-filter="area" value="AI Security"> AI Security</label>
+          <label><input type="checkbox" data-filter="area" value="Blockchain Security"> Blockchain Security</label>
+          <label><input type="checkbox" data-filter="area" value="Digital Forensics"> Digital Forensics</label>
+          <label><input type="checkbox" data-filter="area" value="SOC"> SOC / Threat Detection</label>
+          <label><input type="checkbox" data-filter="area" value="Critical Infrastructure"> Critical Infrastructure</label>
+          <label><input type="checkbox" data-filter="area" value="Cyber Resilience"> Cyber Resilience</label>
+          <label><input type="checkbox" data-filter="area" value="Cybersecurity Education"> Cybersecurity Education</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Funding Type</h4>
+          <label><input type="checkbox" data-filter="type" value="Research Grant"> Research Grant</label>
+          <label><input type="checkbox" data-filter="type" value="PhD / Doctoral"> PhD</label>
+          <label><input type="checkbox" data-filter="type" value="Fellowship / Scholarship"> Fellowship</label>
+          <label><input type="checkbox" data-filter="type" value="International Joint Research"> Joint Research</label>
+          <label><input type="checkbox" data-filter="type" value="Development Project"> Development Project</label>
+          <label><input type="checkbox" data-filter="type" value="Technical Assistance"> Technical Assistance</label>
+          <label><input type="checkbox" data-filter="type" value="Capacity Building"> Capacity Building</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Eligibility</h4>
+          <label><input type="checkbox" data-filter="elig" value="Bhutan"> Bhutan</label>
+          <label><input type="checkbox" data-filter="elig" value="Developing-country"> Developing Countries</label>
+          <label><input type="checkbox" data-filter="elig" value="International applicants"> International Applicants</label>
+          <label><input type="checkbox" data-filter="elig" value="Potentially relevant"> Requires International Partner</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Status</h4>
+          <label><input type="checkbox" data-filter="status" value="Open"> Open</label>
+          <label><input type="checkbox" data-filter="status" value="Upcoming"> Upcoming</label>
+          <label><input type="checkbox" data-filter="status" value="Closing Soon"> Closing Soon</label>
+        </div>
+      </aside>
+
+      <div class="content-area">
+        <div class="result-meta" id="result-meta">Searching 30 sources…</div>
+        <div id="opp-list" class="card-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="view hidden" id="view-sources">
+    <div class="view-head"><h1>Sources</h1></div>
+    <div id="sources-list" class="card-grid"></div>
+  </section>
+
+  <!-- SAVED -->
+  <section class="view hidden" id="view-saved">
+    <div class="view-head"><h1>Saved Opportunities</h1></div>
+    <div id="saved-list" class="card-grid"></div>
+  </section>
+
+  <!-- RESEARCH PROJECTS -->
+  <section class="view hidden" id="view-research">
+    <div class="view-head">
+      <h1>Research Projects</h1>
+      <button class="primary-btn" id="add-project">+ Add Project</button>
+    </div>
+    <div id="projects-list" class="stack"></div>
+  </section>
+
+  <!-- PHD -->
+  <section class="view hidden" id="view-phd">
+    <div class="view-head">
+      <h1>PhD Tracker</h1>
+      <button class="primary-btn" id="add-phd">+ Add PhD Opportunity</button>
+    </div>
+    <div id="phd-list" class="stack"></div>
+  </section>
+
+  <!-- TASKS -->
+  <section class="view hidden" id="view-tasks">
+    <div class="view-head">
+      <h1>Tasks &amp; Deadlines</h1>
+      <button class="primary-btn" id="add-task">+ Add Task</button>
+    </div>
+    <div id="tasks-list" class="stack"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="view hidden" id="view-settings">
+    <div class="view-head"><h1>Settings</h1></div>
+    <div class="panel">
+      <p class="muted">Saved items and trackers are stored locally in your browser (localStorage).
+      A future release will persist them to PostgreSQL/Supabase.</p>
+      <button class="danger-btn" id="wipe-local">Clear all local data</button>
+    </div>
+  </section>
+</main>
+
+<div class="filter-backdrop" id="filter-backdrop"></div>
+<button class="filter-fab" id="filter-fab">Filters</button>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="modal-title">Edit</h3><button class="ghost-btn" id="modal-close">✕</button></div>
+    <div id="modal-body"></div>
+    <div class="modal-foot"><button class="ghost-btn" id="modal-cancel">Cancel</button><button class="primary-btn" id="modal-save">Save</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
