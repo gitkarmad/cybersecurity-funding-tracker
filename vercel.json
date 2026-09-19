@@ -1,14 +1,14 @@
 {
-  "$schema": "https://schema.railpack.com",
-  "provider": "python",
-  "steps": {
-    "build": {
-      "commands": [
-        "cd backend && pip install -r requirements.txt"
-      ]
+  "builds": [
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
     }
-  },
-  "deploy": {
-    "startCommand": "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
-  }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "backend/main.py"
+    }
+  ]
 }
